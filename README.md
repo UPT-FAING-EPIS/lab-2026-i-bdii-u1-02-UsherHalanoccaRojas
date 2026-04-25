@@ -2,7 +2,7 @@
 [![Open in Codespaces](https://classroom.github.com/assets/launch-codespace-2972f46106e565e64193e422d61a12cf1da4916b45550586e14ef0a7c637dd04.svg)](https://classroom.github.com/open-in-codespaces?assignment_repo_id=23667484)
 # SESION DE LABORATORIO N° 02: Consumiendo datos de una base de datos Microsoft SQL Server
 
-Nombre:
+Nombre: Usher Damiron Halanocca Rojas
 
 ## OBJETIVOS
   * Comprender el funcionamiento de una aplicación que consume una base de datos relacional contenerizada.
@@ -27,16 +27,22 @@ Nombre:
   * Verificar que otro servicio no este utilizando el puerto 1433. Desactivarlo si existiese.
 
 ## DESARROLLO
-1. Iniciar la aplicación Docker Desktop:
-2. Iniciar la aplicación Powershell o Windows Terminal en modo administrador 
+1. Iniciar la aplicación Docker Desktop:  <img width="1276" height="615" alt="docker run" src="https://github.com/user-attachments/assets/0518ec37-662d-4e72-b8a8-89869364f793" />
+
+2. Iniciar la aplicación Powershell o Windows Terminal en modo administrador  <img width="940" height="215" alt="powershell admin" src="https://github.com/user-attachments/assets/204af05c-a3f3-4fda-a29a-abfe3fb981eb" />
+
 3. En el terminal, ubicarse en un ruta que no sea del sistema. Crear la carpeta "ServicioCliente" y dentro de esta crear la carpeta "db".
 ```Bash
 mkdir -p ServicioCliente/db
 cd ServicioCliente
+<img width="550" height="415" alt="ServicioCliente" src="https://github.com/user-attachments/assets/fb7c4aee-e562-464d-a928-dc779eed7845" />
+
 ```
 4. Iniciar Visual Studio Code desde el terminal.
 ```Bash
 code .
+<img width="981" height="465" alt="vscode " src="https://github.com/user-attachments/assets/10302bd6-70f7-4b01-b59b-fdb250cc91b7" />
+
 ```
 5. En Visual Studio Code, dentro de la carpeta db, añadir el archivo clientes.sql, oon el siguiente contenido:
 ```SQL
@@ -80,6 +86,9 @@ GO
 INSERT TIPOS_DOCUMENTOS(DES_TIPO_DOCUMENTO)
 VALUES ('DNI'),('RUC')
 GO
+
+<img width="1135" height="830" alt="clientes" src="https://github.com/user-attachments/assets/60c5777b-3dec-47a7-9b3c-a0c28da2841b" />
+
 ```
 6. En Visual Studio Code, en en la raiz del proyecto, añadir un archivo docker-compose.yaml, con el siguiente contenido:
 ```YAML
@@ -95,24 +104,35 @@ services:
       - SA_PASSWORD=Upt.2022
     volumes:
       - ./db:/tmp
+
+<img width="918" height="489" alt="docker compose" src="https://github.com/user-attachments/assets/101632d7-342a-43a0-84a1-cd110c0b6fe2" />
+
 ```
 7. En el terminal anteriormente abierto o abrir uno en Visual Studio Code, y dentro de la carpeta ServicioCliente ejecutar el siguiente comando
 ```Bash
 docker-compose up -d
+<img width="969" height="210" alt="docker compose up" src="https://github.com/user-attachments/assets/9debe778-4130-42dc-b37f-b287ae4cd56c" />
+
 ```
 8. En el terminal, esperar un minuto que inicie correctamente el contenedor y ejecutar el siguiente comando:
 ```Bash
 docker exec -it bd_clientes /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Upt.2022 -i /tmp/clientes.sql
+<img width="957" height="319" alt="docker exe" src="https://github.com/user-attachments/assets/0dd20942-299f-4c2d-a85d-da41901e8b7b" />
+
 ```
 9. En el terminal, seguidamente proceder a instalar las siguientes herramientas de .Net:
 ```Bash
 dotnet tool install -g dotnet-ef
 dotnet tool install -g dotnet-aspnet-codegenerator
+<img width="793" height="227" alt="dotnet" src="https://github.com/user-attachments/assets/969983fa-54cc-4b27-bb1f-7fcb59a905fc" />
+
 ```
 10. En el terminal, proceder a crear la API para exponer la data ejecutada anteriormente:
 ```Bash
 dotnet new webapi -o ClienteAPI
 cd ClienteAPI
+<img width="818" height="353" alt="ClienteAPI" src="https://github.com/user-attachments/assets/4f1919fd-87af-4115-8180-5714df268814" />
+
 ```
 11. En el terminal, Ahora agregar las librerias que se necesitara en la aplicación con el siguiente comando
 ```Bash
@@ -120,16 +140,21 @@ dotnet add package Microsoft.EntityFrameworkCore.Design
 dotnet add package Microsoft.EntityFrameworkCore.Tools
 dotnet add package Microsoft.EntityFrameworkCore.SqlServer
 dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design
+<img width="946" height="503" alt="librerias" src="https://github.com/user-attachments/assets/725f2c4c-27f1-4aa3-9125-825fa0a6d837" />
+
 ```
 12. En Visual Studio Code, editar el archivo appsetting.json, que se encuentra en el proyecto ClienteAPI, y adicionar lo siguiente despues de la apertura de la primera llave.
 ```JSON
   "ConnectionStrings": {
     "ClienteDB": "Server=(local);Database=BD_CLIENTES;User Id=sa;Password=Upt.2022;TrustServerCertificate=true"
   },
+<img width="1054" height="525" alt="json" src="https://github.com/user-attachments/assets/16e89b17-5c89-4e5e-a1e8-aa5a70849b33" />
+
 ```
 13. En el Terminal, ubicarse en la carpeta ClienteAPI, ejecutar el siguiente comando para importar las estructuras de datos de la base de datos. (Tener en cuenta las consideraciones iniciales del laboratorio)
 ```Bash
 dotnet ef dbcontext scaffold "Name=ConnectionStrings:ClienteDB" Microsoft.EntityFrameworkCore.SqlServer --context-dir Data --output-dir Models --force
+
 ```
 14. En Visual Studio Code, modificar la clase creada BdClientesContext que se encuentra en el proyecto ClienteAPI en la carpeta Data. Buscar: `Name=ConnectionStrings:ClienteDB` y reemplazar por `ClienteDB`
     
